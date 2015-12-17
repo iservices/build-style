@@ -8,6 +8,7 @@ const minifyCss = require('gulp-minify-css');
 const watch = require('gulp-watch');
 const gulpIf = require('gulp-if');
 const del = require('del');
+const path = require('path');
 
 /**
  * Transform the given sass files into css files.
@@ -21,7 +22,7 @@ const del = require('del');
 function transform(opts) {
   return gulp.src(opts.input.glob)
     .pipe(sass())
-    .on('error', function transformError(err) {
+    .on('error', function (err) {
       if (opts.errorHandler) {
         opts.errorHandler(err);
       } else {
@@ -61,14 +62,16 @@ function notify(err, title, message) {
  * Register style transform tasks.
  *
  * @param {object} opts - The configuration options.
- * @param {string|string[]} opts.glob - The style files to transform.
+ * @param {string} opts.inputDir - The directory that contains the styles.
+ * @param {string|string[]} opts.glob - Glob pattern relative to the inputDir that identifies the style files to transform.
  * @param {string} opts.outputDir - The output for the created files.
  * @param {string} [opts.tasksPrefix] - An optional prefix to apply to task names.
  * @returns {function} - A function that registers tasks.
  */
 module.exports = function registerTasks(opts) {
   const input = {
-    glob: opts.glob,
+    glob: path.normalize(opts.inputDir + '/' + opts.glob),
+    inputDir: opts.inputDir,
     outputDir: opts.outputDir
   };
 
@@ -81,11 +84,11 @@ module.exports = function registerTasks(opts) {
   /**
    * Process the style files.
    */
-  gulp.task(input.tasksPrefix + 'style', function styleTask(done) {
+  gulp.task(input.tasksPrefix + 'style', function (done) {
     del.sync(input.outputDir);
 
     let completeCount = 0;
-    const complete = function complete() {
+    const complete = function () {
       completeCount++;
       if (completeCount >= 2) {
         done();
@@ -99,11 +102,11 @@ module.exports = function registerTasks(opts) {
   /**
    * Watch for changes to style.
    */
-  gulp.task(input.tasksPrefix + 'watchStyle', function watchStyleTask() {
-    watch(input.glob, function watchStyle(file) {
+  gulp.task(input.tasksPrefix + 'watch-style', function () {
+    watch(input.glob, function (file) {
       console.log('watch style: ' + file.path + ' event: ' + file.event);
       let errorDisplayed = false;
-      const errorHandler = function errorHandler(err) {
+      const errorHandler = function (err) {
         if (!errorDisplayed) {
           errorDisplayed = true;
           notify(err, 'Style Error', 'See console for details.');

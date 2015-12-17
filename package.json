@@ -1,10 +1,10 @@
 {
   "name": "build-style",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Build tasks for styles.",
   "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "gulp test-with-coverage"
   },
   "keywords": [
     "style"
@@ -24,6 +24,7 @@
     "gulp-watch": "^4.3.5"
   },
   "devDependencies": {
-    "build-lint": "^1.0.1"
+    "build-lint": "^1.0.1",
+    "build-test": "^1.0.2"
   }
 }
