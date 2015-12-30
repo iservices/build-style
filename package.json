@@ -1,6 +1,6 @@
 {
   "name": "build-style",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Build tasks for styles.",
   "main": "src/index.js",
   "scripts": {
