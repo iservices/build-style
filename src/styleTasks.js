@@ -65,6 +65,7 @@ function notify(err, title, message) {
  * @param {string} opts.inputDir - The directory that contains the styles.
  * @param {string|string[]} opts.glob - Glob pattern relative to the inputDir that identifies the style files to transform.
  * @param {string} opts.outputDir - The output for the created files.
+ * @param {string} [opts.version] - An optional version number to append to the outputDir.
  * @param {string} [opts.tasksPrefix] - An optional prefix to apply to task names.
  * @returns {function} - A function that registers tasks.
  */
@@ -87,9 +88,14 @@ module.exports = function registerTasks(opts) {
 
   const input = {
     glob: globParam,
-    inputDir: opts.inputDir,
-    outputDir: opts.outputDir
+    inputDir: path.normalize(opts.inputDir)
   };
+
+  if (opts.version) {
+    input.outputDir = path.normalize(opts.outputDir + '/' + opts.version);
+  } else {
+    input.outputDir = path.normalize(opts.outputDir);
+  }
 
   if (opts.tasksPrefix) {
     input.tasksPrefix = opts.tasksPrefix + '-';

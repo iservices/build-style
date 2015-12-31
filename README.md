@@ -70,6 +70,12 @@ Type: `String`
 
 The directory that compiled style files will be output to.  The folder structure from the options.inputDir folder will be recreated in this folder.
 
+#### options.version
+
+Type: `String`
+
+An optional version number which will be appended to the outputDir folder.
+
 #### options.tasksPrefix
 
 Type: `String`
