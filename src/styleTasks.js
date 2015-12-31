@@ -4,8 +4,7 @@
 const gulp = require('gulp');
 const sass = require('gulp-sass');
 const rename = require('gulp-rename');
-const minifyCss = require('gulp-minify-css');
-const watch = require('gulp-watch');
+const minifyCss = require('gulp-cssnano');
 const gulpIf = require('gulp-if');
 const del = require('del');
 const path = require('path');
@@ -84,7 +83,7 @@ module.exports = function registerTasks(opts) {
       globParam = path.normalize(opts.inputDir + '/' + opts.glob);
     }
   }
-  
+
   const input = {
     glob: globParam,
     inputDir: opts.inputDir,
@@ -119,6 +118,7 @@ module.exports = function registerTasks(opts) {
    * Watch for changes to style.
    */
   gulp.task(input.tasksPrefix + 'watch-style', function () {
+    const watch = require('gulp-watch');
     watch(input.glob, function (file) {
       console.log('watch style: ' + file.path + ' event: ' + file.event);
       let errorDisplayed = false;

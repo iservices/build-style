@@ -1,6 +1,6 @@
 {
   "name": "build-style",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Build tasks for styles.",
   "main": "src/index.js",
   "scripts": {
@@ -17,14 +17,14 @@
   },
   "dependencies": {
     "del": "^2.2.0",
+    "gulp-cssnano": "^2.0.0",
     "gulp-if": "^2.0.0",
-    "gulp-minify-css": "^1.2.2",
     "gulp-rename": "^1.2.2",
-    "gulp-sass": "^2.1.1",
-    "gulp-watch": "^4.3.5"
+    "gulp-sass": "^2.1.1"
   },
   "devDependencies": {
     "build-lint": "^1.0.1",
-    "build-test": "^1.0.2"
+    "build-test": "^1.0.2",
+    "gulp-watch": "^4.3.5"
   }
 }
