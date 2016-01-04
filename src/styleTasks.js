@@ -4,7 +4,7 @@
 const gulp = require('gulp');
 const sass = require('gulp-sass');
 const rename = require('gulp-rename');
-const minifyCss = require('gulp-cssnano');
+const cssnano = require('gulp-cssnano');
 const gulpIf = require('gulp-if');
 const watch = require('gulp-watch');
 const del = require('del');
@@ -29,7 +29,7 @@ function transform(opts) {
         throw err;
       }
     })
-    .pipe(gulpIf(opts.minify, minifyCss()))
+    .pipe(gulpIf(opts.minify, cssnano({ discardComments: { removeAll: true } })))
     .pipe(gulpIf(opts.minify, rename({ extname: '.min.css' })))
     .pipe(gulp.dest(opts.input.outputDir));
 }
