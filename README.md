@@ -1,4 +1,4 @@
-# build-style
+# build-style (BETA)
 
 ## Overview
 This is a node package that defines gulp tasks that can be used to perform style compilations.
@@ -75,6 +75,12 @@ The directory that compiled style files will be output to.  The folder structure
 Type: `String`
 
 An optional version number which will be appended to the outputDir folder.
+
+#### options.name
+
+Type: `String`
+
+Optional name to append to the output dir.  This would appear after the version number.
 
 #### options.tasksPrefix
 
