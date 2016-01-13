@@ -68,6 +68,7 @@ function notify(err, title, message) {
  * @param {string} [opts.version] - An optional version number to append to the outputDir.
  * @param {string} [opts.name] - Optional name to append to the output dir.  This would appear after the version number.
  * @param {string} [opts.tasksPrefix] - An optional prefix to apply to task names.
+ * @param {string[]} [opts.tasksDependencies] - Optional array of tasks names that must be completed before these registered tasks runs.
  * @returns {function} - A function that registers tasks.
  */
 module.exports = function registerTasks(opts) {
@@ -89,7 +90,8 @@ module.exports = function registerTasks(opts) {
 
   const input = {
     glob: globParam,
-    inputDir: path.normalize(opts.inputDir)
+    inputDir: path.normalize(opts.inputDir),
+    tasksDependencies: opts.tasksDependencies || []
   };
 
   if (opts.version) {
@@ -111,7 +113,7 @@ module.exports = function registerTasks(opts) {
   /**
    * Process the style files.
    */
-  gulp.task(input.tasksPrefix + 'style', function (done) {
+  gulp.task(input.tasksPrefix + 'style', input.tasksDependencies, function (done) {
     del.sync(input.outputDir);
 
     let completeCount = 0;
