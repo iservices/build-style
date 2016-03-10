@@ -34,8 +34,10 @@ describe('registerTasks', function () {
     require(__dirname + '/fixtures/watch/gulpfile');
     gulp.on('task_stop', function (e) {
       if (e.task === 'watch-watch-style') {
-        const text = fs.readFileSync(__dirname + '/fixtures/watch/chat/log/styles.scss', 'utf8');
-        fs.writeFileSync(__dirname + '/fixtures/watch/chat/log/styles.scss', text);
+        setTimeout(function () {
+          const text = fs.readFileSync(__dirname + '/fixtures/watch/chat/log/styles.scss', 'utf8');
+          fs.writeFileSync(__dirname + '/fixtures/watch/chat/log/styles.scss', text);
+        }, 2000);
         setTimeout(function (finish) {
           fs.statSync(__dirname + '/../../testOutput/watch/log/styles.css');
           fs.statSync(__dirname + '/../../testOutput/watch/log/styles.min.css');
