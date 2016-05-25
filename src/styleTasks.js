@@ -4,7 +4,6 @@
 const gulp = require('gulp');
 const sass = require('gulp-sass');
 const rename = require('gulp-rename');
-const cssnano = require('gulp-cssnano');
 const gulpIf = require('gulp-if');
 const del = require('del');
 const path = require('path');
@@ -20,7 +19,7 @@ const path = require('path');
  */
 function transform(opts) {
   return gulp.src(opts.input.glob)
-    .pipe(sass())
+    .pipe(sass({ outputStyle: opts.minify ? 'compressed' : 'nested' }))
     .on('error', function (err) {
       if (opts.errorHandler) {
         opts.errorHandler(err);
@@ -28,7 +27,6 @@ function transform(opts) {
         throw err;
       }
     })
-    .pipe(gulpIf(opts.minify, cssnano({ discardComments: { removeAll: true } })))
     .pipe(gulpIf(opts.minify, rename({ extname: '.min.css' })))
     .pipe(gulp.dest(opts.input.outputDir));
 }
