@@ -1,10 +1,15 @@
 {
   "name": "build-style",
-  "version": "1.0.12",
-  "description": "Build tasks for styles.",
+  "version": "2.0.0",
+  "description": "Style transformation command line tool.",
   "main": "src/index.js",
+  "bin": "src/index.js",
+  "files": [
+    "src/"
+  ],
   "scripts": {
-    "test": "gulp test-with-coverage"
+    "lint": "build-lint \"src/**/*.js\"",
+    "lint-watch": "build-lint \"src/**/*.js\" -w"
   },
   "keywords": [
     "style"
@@ -17,14 +22,11 @@
   },
   "dependencies": {
     "del": "^2.2.0",
-    "gulp-if": "^2.0.0",
-    "gulp-rename": "^1.2.2",
-    "gulp-sass": "^2.1.1",
-    "gulp-watch": "^4.3.5",
-    "gulp-zip": "^3.2.0"
+    "globby": "^5.0.0",
+    "minimist": "^1.2.0",
+    "node-sass": "^3.7.0"
   },
   "devDependencies": {
-    "build-lint": "^1.0.1",
-    "build-test": "^1.0.2"
+    "build-lint": "^2.0.2"
   }
 }
