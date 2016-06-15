@@ -44,8 +44,8 @@ Options:
 | Option | Description |
 | ---    | ---         |
 | `<files>` | A glob pattern that identifies files to copy.  Multiple glob patterns can be specified. |
-| -k     | When this option is specified the output folder will not be deleted before files are emitted. |
 | -i     | The base directory used when creating folder paths in the output directory.  Defaults to the current working directory. |
+| -k     | When this option is specified the output folder will not be deleted before files are emitted. |
 | -n     | A name to include in the output path |
 | -o     | The directory to copy files to. |
 | -v     | A version number to include in the output path. |
