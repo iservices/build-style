@@ -5,6 +5,7 @@
 const globby = require('globby');
 const del = require('del');
 const cp = require('child_process');
+const chokidar = require('chokidar');
 const path = require('path');
 const argsv = require('minimist')(process.argv.slice(2));
 
@@ -59,9 +60,6 @@ function compile(files, args) {
     input.push('compressed');
     input.push('--source-map');
     input.push('true');
-    if (args.w || args.W) {
-      input.push('-w');
-    }
 
     cp.spawn('node-sass', input, { stdio: 'inherit' })
       .on('exit', code => {
@@ -70,6 +68,26 @@ function compile(files, args) {
         }
       });
   });
+}
+
+/**
+ * Watch for changes to the given files and compile them when they do change.
+ *
+ * @ignore
+ * @param {Object} args - The arguments passed into the command line.
+ * @return {void}
+ */
+function compileWatch(args) {
+  if (args._.length) {
+    const watcher = chokidar.watch(args._, {
+      ignored: /[\/\\]\./,
+      persistent: true
+    });
+    watcher.on('ready', () => {
+      watcher.on('add', file => { compile([file], args); });
+      watcher.on('change', file => { compile([file], args); });
+    });
+  }
 }
 
 if (!argsv._.length) {
@@ -88,9 +106,14 @@ if (!argsv._.length) {
   console.log('-v\t A version number to include in the output path.');
   console.log('-w\t When present the files specified in the -g glob pattern(s) will be watched for changes and tested when they do change.');
   process.exitCode = 1;
+} else if (argsv.w) {
+  //
+  // watch for changes
+  //
+  compileWatch(argsv);
 } else {
   //
-  // compile files specified and begin optional watch
+  // compile files specified
   //
   if (!argsv.k) {
     del.sync(formatTarget(argsv));
