@@ -4,7 +4,7 @@
 
 const globby = require('globby');
 const del = require('del');
-const cp = require('child_process');
+const spawn = require('cross-spawn');
 const chokidar = require('chokidar');
 const path = require('path');
 const argsv = require('minimist')(process.argv.slice(2));
@@ -61,7 +61,7 @@ function compile(files, args) {
     input.push('--source-map');
     input.push('true');
 
-    cp.spawn('node-sass', input, { stdio: 'inherit' })
+    spawn('node-sass', input, { stdio: 'inherit' })
       .on('exit', code => {
         if (code) {
           process.exitCode = code;
