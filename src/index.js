@@ -4,6 +4,7 @@
 
 const globby = require('globby');
 const del = require('del');
+const fs = require('fs');
 const spawn = require('cross-spawn');
 const chokidar = require('chokidar');
 const path = require('path');
@@ -90,17 +91,30 @@ function compileWatch(args) {
   }
 }
 
+// get version from package.json
+if (argsv.m && !argsv.v) {
+  try {
+    argsv.v = (typeof argsv.m === 'string') ?
+      JSON.parse(fs.readFileSync(argsv.m)).version :
+      JSON.parse(fs.readFileSync('./package.json')).version;
+  } catch (err) {
+    console.error(err);
+    return 1;
+  }
+}
+
 if (!argsv._.length) {
   //
   // print help info if args are missing
   //
   console.log('Usage: build-style <files> [<files>] -o <output directory> [-i <base input directory>]');
-  console.log('                   [-v <version>] [-n <name>] [-w]');
+  console.log('                   [-m [<package.json]] [-v <version>] [-n <name>] [-w]');
   console.log('');
   console.log('Options:');
   console.log('<files>\t A glob pattern that identifies files to compile.  Multiple glob patterns can be specified.');
   console.log('-i\t The base directory used when creating folder paths in the output directory.  Defaults to the current working directory.');
   console.log('-k\t When this option is specified the output folder will not be deleted before files are emitted.');
+  console.log('-m\t Read in the version number from a package.json file.  If a file isn\'t specified the package.json in the cwd will be used.');
   console.log('-n\t A name to include in the output path');
   console.log('-o\t The directory to copy files to.');
   console.log('-v\t A version number to include in the output path.');
