@@ -80,13 +80,25 @@ function compile(files, args) {
  */
 function compileWatch(args) {
   if (args._.length) {
-    const watcher = chokidar.watch(args._, {
+    const patterns = [];
+    Array.prototype.push.apply(patterns, args._);
+    if (Array.isArray(args.w)) Array.prototype.push.apply(patterns, args.w);
+    else if (typeof args.w === 'string') patterns.push(args.w);
+    const watcher = chokidar.watch(patterns, {
       ignored: /[\/\\]\./,
       persistent: true
     });
     watcher.on('ready', () => {
-      watcher.on('add', file => { compile([file], args); });
-      watcher.on('change', file => { compile([file], args); });
+      watcher.on('add', () => {
+        globby(args._).then(files => {
+          compile(files, args);
+        });
+      });
+      watcher.on('change', () => {
+        globby(args._).then(files => {
+          compile(files, args);
+        });
+      });
     });
   }
 }
@@ -118,7 +130,7 @@ if (!argsv._.length) {
   console.log('-n\t A name to include in the output path');
   console.log('-o\t The directory to copy files to.');
   console.log('-v\t A version number to include in the output path.');
-  console.log('-w\t When present the files specified in the -g glob pattern(s) will be watched for changes and tested when they do change.');
+  console.log('-w\t When present the files specified in the -g glob pattern(s) will be watched for changes and compiled when they do change.  Additional files can be specified here as well.');
   process.exitCode = 1;
 } else if (argsv.w) {
   //

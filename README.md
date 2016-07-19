@@ -50,4 +50,4 @@ Options:
 | -n     | A name to include in the output path |
 | -o     | The directory to copy files to. |
 | -v     | A version number to include in the output path. |
-| -w     | When present the files specified in the glob pattern(s) will be watched for changes and copied when they do change. | 
+| -w     | When present the files specified in the -g glob pattern(s) will be watched for changes and compiled when they do change.  Additional files can be specified here as well. | 
